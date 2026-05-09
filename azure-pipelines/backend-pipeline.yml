@@ -48,42 +48,34 @@ stages:
                 $(imageTag)
                 latest
 
-  - stage: DeployDev
+   - stage: DeployDev
     displayName: 'Deploy to Development'
     dependsOn: Build
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
     jobs:
-      - deployment: DeployDevJob
-        environment: 'development'
+      - job: DeployDevJob
         pool:
           vmImage: 'ubuntu-latest'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - task: AzureWebAppContainer@1
-                  displayName: 'Deploy Backend to Dev App Service'
-                  inputs:
-                    azureSubscription: $(AZURE_SUBSCRIPTION)
-                    appName: $(BACKEND_APP_NAME)
-                    containers: $(DOCKER_REGISTRY)/$(BACKEND_IMAGE_NAME):$(imageTag)
+        steps:
+          - task: AzureWebAppContainer@1
+            displayName: 'Deploy Backend to Dev App Service'
+            inputs:
+              azureSubscription: $(AZURE_SUBSCRIPTION)
+              appName: $(BACKEND_APP_NAME)
+              containers: $(DOCKER_REGISTRY)/$(BACKEND_IMAGE_NAME):$(imageTag)
 
   - stage: DeployProd
     displayName: 'Deploy to Production'
     dependsOn: Build
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
     jobs:
-      - deployment: DeployProdJob
-        environment: 'production'
+      - job: DeployProdJob
         pool:
           vmImage: 'ubuntu-latest'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - task: AzureWebAppContainer@1
-                  displayName: 'Deploy Backend to Prod App Service'
-                  inputs:
-                    azureSubscription: $(AZURE_SUBSCRIPTION)
-                    appName: $(BACKEND_APP_NAME)
-                    containers: $(DOCKER_REGISTRY)/$(BACKEND_IMAGE_NAME):$(imageTag)
+        steps:
+          - task: AzureWebAppContainer@1
+            displayName: 'Deploy Backend to Prod App Service'
+            inputs:
+              azureSubscription: $(AZURE_SUBSCRIPTION)
+              appName: $(BACKEND_APP_NAME)
+              containers: $(DOCKER_REGISTRY)/$(BACKEND_IMAGE_NAME):$(imageTag)
