@@ -55,14 +55,20 @@ stages:
         pool:
           vmImage: 'ubuntu-latest'
         steps:
+          - task: DownloadPipelineArtifact@2
+            displayName: 'Download frontend build artifact'
+            inputs:
+              artifactName: 'drop'
+              targetPath: '$(System.DefaultWorkingDirectory)/frontend-build'
+
           - task: AzureStaticWebApp@0
             displayName: 'Deploy to Static Web App (Dev)'
             inputs:
-              app_location: ''          # Pre-built artifacts, no Oryx build
-              output_location: 'dist'
+              app_location: ''
+              output_location: ''
               azure_static_web_apps_api_token: $(STATIC_WEB_APP_TOKEN)
               skip_app_build: true
-              workingDirectory: '$(Pipeline.Workspace)/drop'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/frontend-build'
 
   - stage: DeployProd
     displayName: 'Deploy to Production'
@@ -73,11 +79,17 @@ stages:
         pool:
           vmImage: 'ubuntu-latest'
         steps:
+          - task: DownloadPipelineArtifact@2
+            displayName: 'Download frontend build artifact'
+            inputs:
+              artifactName: 'drop'
+              targetPath: '$(System.DefaultWorkingDirectory)/frontend-build'
+
           - task: AzureStaticWebApp@0
             displayName: 'Deploy to Static Web App (Prod)'
             inputs:
               app_location: ''
-              output_location: 'dist'
+              output_location: ''
               azure_static_web_apps_api_token: $(STATIC_WEB_APP_TOKEN)
               skip_app_build: true
-              workingDirectory: '$(Pipeline.Workspace)/drop'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/frontend-build'
