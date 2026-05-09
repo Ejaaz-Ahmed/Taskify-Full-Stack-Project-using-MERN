@@ -51,45 +51,33 @@ stages:
     dependsOn: Build
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
     jobs:
-      - deployment: DeployDevJob
-        environment: 'development'
+      - job: DeployDevJob
         pool:
           vmImage: 'ubuntu-latest'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - task: AzureStaticWebApp@0
-                  displayName: 'Deploy to Static Web App (Dev)'
-                  inputs:
-                    app_location: ''  # we are deploying pre-built artifacts
-                    output_location: 'dist'
-                    azure_static_web_apps_api_token: $(STATIC_WEB_APP_TOKEN)
-                    skip_app_build: true
-                    workingDirectory: '$(Pipeline.Workspace)/drop'
-                  env:
-                    VITE_APP_BASE_URL: $(REACT_APP_BASE_URL)
+        steps:
+          - task: AzureStaticWebApp@0
+            displayName: 'Deploy to Static Web App (Dev)'
+            inputs:
+              app_location: ''          # Pre-built artifacts, no Oryx build
+              output_location: 'dist'
+              azure_static_web_apps_api_token: $(STATIC_WEB_APP_TOKEN)
+              skip_app_build: true
+              workingDirectory: '$(Pipeline.Workspace)/drop'
 
   - stage: DeployProd
     displayName: 'Deploy to Production'
     dependsOn: Build
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
     jobs:
-      - deployment: DeployProdJob
-        environment: 'production'
+      - job: DeployProdJob
         pool:
           vmImage: 'ubuntu-latest'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - task: AzureStaticWebApp@0
-                  displayName: 'Deploy to Static Web App (Prod)'
-                  inputs:
-                    app_location: ''
-                    output_location: 'dist'
-                    azure_static_web_apps_api_token: $(STATIC_WEB_APP_TOKEN)
-                    skip_app_build: true
-                    workingDirectory: '$(Pipeline.Workspace)/drop'
-                  env:
-                    VITE_APP_BASE_URL: $(REACT_APP_BASE_URL)
+        steps:
+          - task: AzureStaticWebApp@0
+            displayName: 'Deploy to Static Web App (Prod)'
+            inputs:
+              app_location: ''
+              output_location: 'dist'
+              azure_static_web_apps_api_token: $(STATIC_WEB_APP_TOKEN)
+              skip_app_build: true
+              workingDirectory: '$(Pipeline.Workspace)/drop'
