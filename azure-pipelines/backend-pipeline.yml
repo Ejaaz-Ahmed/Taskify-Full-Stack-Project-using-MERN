@@ -38,9 +38,29 @@ stages:
       inputs:
         pollingTimeoutSec: '300'
 
+- stage: SCA
+  displayName: 'Security - SCA (Snyk)'
+  dependsOn: SAST
+  condition: succeeded()
+  jobs:
+  - job: SnykScan
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - checkout: self
+    - task: SnykSecurityScan@1
+      displayName: 'Snyk - Scan Backend Dependencies'
+      inputs:
+        serviceConnectionEndpoint: 'snyk-connection'
+        testType: 'app'
+        targetFile: 'server/package.json'
+        failOnIssues: true
+        monitorWhen: 'always'
+        additionalArguments: '--severity-threshold=high'
+
 - stage: Build
   displayName: 'Build and Push Backend Image'
-  dependsOn: SAST
+  dependsOn: SCA
   condition: succeeded()
   jobs:
     - job: BuildJob
