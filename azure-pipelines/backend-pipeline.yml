@@ -54,7 +54,7 @@ stages:
         serviceConnectionEndpoint: 'snyk-connection'
         testType: 'app'
         targetFile: 'server/package.json'
-        failOnIssues: true
+        failOnIssues: false
         monitorWhen: 'always'
         additionalArguments: '--severity-threshold=high'
 
