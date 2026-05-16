@@ -130,7 +130,7 @@ stages:
           -v $(Build.ArtifactStagingDirectory)/zap-reports:/zap/wrk \
           zaproxy/zap-stable \
           zap-baseline.py \
-          -t http://20.6.130.6 \
+          -t http://20.6.130.6:8800/ \
           -r zap-report.html \
           -I
       displayName: 'Run ZAP Baseline Scan'
