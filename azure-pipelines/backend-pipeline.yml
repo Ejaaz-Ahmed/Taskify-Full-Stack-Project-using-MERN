@@ -22,7 +22,7 @@ stages:
     steps:
     - checkout: self
       fetchDepth: 0
-    - task: SonarQubePrepare@5
+    - task: SonarQubePrepare@7
       inputs:
         SonarQube: 'sonarqube-connection'
         scannerMode: 'CLI'
@@ -33,8 +33,8 @@ stages:
         extraProperties: |
           sonar.exclusions=**/node_modules/**
           sonar.javascript.file.suffixes=.js,.jsx
-    - task: SonarQubeAnalyze@5
-    - task: SonarQubePublish@5
+    - task: SonarQubeAnalyze@7
+    - task: SonarQubePublish@7
       inputs:
         pollingTimeoutSec: '300'
 
