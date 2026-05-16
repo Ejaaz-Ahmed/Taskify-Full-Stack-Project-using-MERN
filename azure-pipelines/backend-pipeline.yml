@@ -130,7 +130,7 @@ stages:
           -v $(Build.ArtifactStagingDirectory)/zap-reports:/zap/wrk \
           zaproxy/zap-stable \
           zap-baseline.py \
-          -t <YOUR_FRONTEND_URL> \
+          -t http://20.6.130.6 \
           -r zap-report.html \
           -I
       displayName: 'Run ZAP Baseline Scan'
