@@ -13,69 +13,96 @@ variables:
     value: $(Build.BuildId)
 
 stages:
-  - stage: Build
-    displayName: 'Build and Push Backend Image'
-    jobs:
-      - job: BuildJob
-        pool:
-          vmImage: 'ubuntu-latest'
-        steps:
-          - checkout: self
+- stage: SAST
+  displayName: 'Security - SAST (SonarQube)'
+  jobs:
+  - job: SonarScan
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - checkout: self
+      fetchDepth: 0
+    - task: SonarQubePrepare@5
+      inputs:
+        SonarQube: 'sonarqube-connection'
+        scannerMode: 'CLI'
+        configMode: 'manual'
+        cliProjectKey: 'taskapp-backend'
+        cliProjectName: 'Task App Backend'
+        cliSources: 'server/'
+        extraProperties: |
+          sonar.exclusions=**/node_modules/**
+          sonar.javascript.file.suffixes=.js,.jsx
+    - task: SonarQubeAnalyze@5
+    - task: SonarQubePublish@5
+      inputs:
+        pollingTimeoutSec: '300'
 
-          - task: Docker@2
-            displayName: 'Login to ACR'
-            inputs:
-              command: login
-              containerRegistry: acr-service-connection
+- stage: Build
+  displayName: 'Build and Push Backend Image'
+  dependsOn: SAST
+  condition: succeeded()
+  jobs:
+    - job: BuildJob
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+        - checkout: self
 
-          - task: Docker@2
-            displayName: 'Build Backend Image'
-            inputs:
-              command: build
-              repository: $(DOCKER_REGISTRY)/$(BACKEND_IMAGE_NAME)
-              dockerfile: server/Dockerfile
-              buildContext: server/
-              tags: |
-                $(imageTag)
-                latest
+        - task: Docker@2
+          displayName: 'Login to ACR'
+          inputs:
+            command: login
+            containerRegistry: acr-service-connection
 
-          - task: Docker@2
-            displayName: 'Push Backend Image to ACR'
-            inputs:
-              command: push
-              repository: $(DOCKER_REGISTRY)/$(BACKEND_IMAGE_NAME)
-              tags: |
-                $(imageTag)
-                latest
+        - task: Docker@2
+          displayName: 'Build Backend Image'
+          inputs:
+            command: build
+            repository: $(DOCKER_REGISTRY)/$(BACKEND_IMAGE_NAME)
+            dockerfile: server/Dockerfile
+            buildContext: server/
+            tags: |
+              $(imageTag)
+              latest
 
-  - stage: DeployDev
-    displayName: 'Deploy to Development'
-    dependsOn: Build
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
-    jobs:
-      - job: DeployDevJob
-        pool:
-          vmImage: 'ubuntu-latest'
-        steps:
-          - task: AzureWebAppContainer@1
-            displayName: 'Deploy Backend to Dev App Service'
-            inputs:
-              azureSubscription: $(AZURE_SUBSCRIPTION)
-              appName: $(BACKEND_APP_NAME)
-              containers: $(DOCKER_REGISTRY)/$(BACKEND_IMAGE_NAME):$(imageTag)
+        - task: Docker@2
+          displayName: 'Push Backend Image to ACR'
+          inputs:
+            command: push
+            repository: $(DOCKER_REGISTRY)/$(BACKEND_IMAGE_NAME)
+            tags: |
+              $(imageTag)
+              latest
 
-  - stage: DeployProd
-    displayName: 'Deploy to Production'
-    dependsOn: Build
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
-    jobs:
-      - job: DeployProdJob
-        pool:
-          vmImage: 'ubuntu-latest'
-        steps:
-          - task: AzureWebAppContainer@1
-            displayName: 'Deploy Backend to Prod App Service'
-            inputs:
-              azureSubscription: $(AZURE_SUBSCRIPTION)
-              appName: $(BACKEND_APP_NAME)
-              containers: $(DOCKER_REGISTRY)/$(BACKEND_IMAGE_NAME):$(imageTag)
+- stage: DeployDev
+  displayName: 'Deploy to Development'
+  dependsOn: Build
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+  jobs:
+    - job: DeployDevJob
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+        - task: AzureWebAppContainer@1
+          displayName: 'Deploy Backend to Dev App Service'
+          inputs:
+            azureSubscription: $(AZURE_SUBSCRIPTION)
+            appName: $(BACKEND_APP_NAME)
+            containers: $(DOCKER_REGISTRY)/$(BACKEND_IMAGE_NAME):$(imageTag)
+
+- stage: DeployProd
+  displayName: 'Deploy to Production'
+  dependsOn: Build
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  jobs:
+    - job: DeployProdJob
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+        - task: AzureWebAppContainer@1
+          displayName: 'Deploy Backend to Prod App Service'
+          inputs:
+            azureSubscription: $(AZURE_SUBSCRIPTION)
+            appName: $(BACKEND_APP_NAME)
+            containers: $(DOCKER_REGISTRY)/$(BACKEND_IMAGE_NAME):$(imageTag)
