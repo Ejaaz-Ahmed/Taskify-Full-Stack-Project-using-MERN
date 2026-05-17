@@ -5,8 +5,6 @@
 
 **Roll No:** NUM-BSCS-2023-02
 
-**Instructor:** Sir Shahzad Arif
-
 **Date Performed:** May 20, 2026
 
 
@@ -192,8 +190,8 @@ A free Snyk account was created, and the Snyk extension was installed in Azure D
 service connection named snyk-connection was set up using the Snyk API token. The Snyk
 dashboard shows the imported project (from server/package.json) along with a list of
 dependency vulnerabilities, their severity, and recommended fixes.
-
-
+<img width="868" height="447" alt="image" src="https://github.com/user-attachments/assets/92d6daac-d1be-42e2-a110-de18b50c755e" />
+<img width="824" height="310" alt="image" src="https://github.com/user-attachments/assets/201581ad-6428-452a-9e0f-d0f58d2abf3d" />
 
 
 
@@ -204,6 +202,8 @@ The backend pipeline was extended with an SCA stage that runs the SnykSecuritySc
 The stage executes after SAST and before the build. When Snyk finds high‑severity issues, the
 pipeline fails (unless failOnIssues is set to false). The pipeline logs show the Snyk scan output,
 and an HTML report is attached as an artifact.
+<img width="754" height="543" alt="image" src="https://github.com/user-attachments/assets/1d0889b3-335a-4f82-a21a-d18bca09014b" />
+<img width="975" height="480" alt="image" src="https://github.com/user-attachments/assets/3b593353-6882-4d1a-b483-3761d5916f5c" />
 
 
 
@@ -216,6 +216,7 @@ port 8800, the automatic DAST stage in the pipeline could not generate a report.
 requirement, a manual OWASP ZAP baseline scan was performed on a local machine against the
 backend endpoint http://20.6.130.6:8800/. The scan completed successfully and generated an
 HTML report.
+<img width="975" height="308" alt="image" src="https://github.com/user-attachments/assets/1e8ef4df-29a1-49a8-898c-980d40f90fd9" />
 
 
 **3.4.1 ZAP Report**
@@ -223,8 +224,10 @@ HTML report.
 
 The generated zap-report.html contains a list of alerts categorised by risk level (Low, Medium,
 High). The report includes details about each finding, such as the affected URL, parameter, and
-suggested remediation. _[Insert screenshot of the first page of the ZAP report showing alert_
-_summary]_
+suggested remediation.
+<img width="735" height="457" alt="image" src="https://github.com/user-attachments/assets/2324115f-8017-43db-960f-04642b0e2074" />
+<img width="538" height="417" alt="image" src="https://github.com/user-attachments/assets/5733dbeb-119a-4f54-8dbb-62a4d4f62268" />
+
 
 
 **3.4.2 Analysis of Top 3 Vulnerabilities**
@@ -256,9 +259,6 @@ steal it.
 _Remediation:_ When setting cookies (e.g., with res.cookie()), include the option httpOnly:
 true.
 
-
-These findings are documented in the report and the recommended fixes are straightforward to
-implement. _[Insert screenshot of the specific alerts in the ZAP report]_
 
 
 **4. Conclusion**
