@@ -2,8 +2,11 @@
 
 
 **Student Name:** Ejaz Ahmed
+
 **Roll No:** NUM-BSCS-2023-02
+
 **Instructor:** Sir Shahzad Arif
+
 **Date Performed:** May 20, 2026
 
 
@@ -31,8 +34,8 @@ screenshot as evidence.
 
 The original MERN application repository (Taskify-Full-Stack-Project-using-MERN) was
 forked from GitHub to my personal GitHub account. The fork badge is clearly visible on my
-GitHub profile, confirming that the repository is a personal copy of the original source. _[Insert_
-_screenshot of forked repository on GitHub]_
+GitHub profile, confirming that the repository is a personal copy of the original source. 
+<img width="736" height="511" alt="image" src="https://github.com/user-attachments/assets/345fc220-4511-4f7f-9bcd-cbe165bce117" />
 
 
 **2.2 Git Flow Branches**
@@ -41,7 +44,10 @@ _screenshot of forked repository on GitHub]_
 Inside Azure Repos, the Git Flow branching model was implemented. The repository contains
 three main branches: main (production), develop (integration), and a feature branch
 named feature/dockerize-app. This structure allows for controlled feature development and
-release management. _[Insert screenshot of branch list in Azure Repos]_
+release management.
+<img width="975" height="293" alt="image" src="https://github.com/user-attachments/assets/f8fe62f8-4056-485f-b0a3-5ada1bcb00c7" />
+<img width="770" height="511" alt="image" src="https://github.com/user-attachments/assets/827cef17-dfef-4b84-bbda-4b892b68214a" />
+
 
 
 **2.3 Dockerfiles Committed**
@@ -51,7 +57,10 @@ Both the backend and frontend Dockerfiles, along with associated configuration f
 committed to the repository. The backend/Dockerfile uses a multi‑stage build for Node.js, while
 the frontend/Dockerfile builds the React application and serves it using Nginx.
 Additionally, nginx.conf and .dockerignore files are present to ensure efficient and secure
-container builds. _[Insert screenshot of Dockerfiles in Azure Repos]_
+container builds.
+<img width="814" height="479" alt="image" src="https://github.com/user-attachments/assets/4dc2daba-716c-4ca8-879d-885b396de7fd" />
+<img width="975" height="811" alt="image" src="https://github.com/user-attachments/assets/8d04d724-007c-4115-bc1a-f9a26b534f1e" />
+
 
 
 **2.4 Docker Images in Azure Container Registry (ACR)**
@@ -59,8 +68,10 @@ container builds. _[Insert screenshot of Dockerfiles in Azure Repos]_
 
 The backend Docker image was built and pushed to Azure Container Registry (ACR) with build
 tags (e.g., 42, latest). The ACR repository shows taskapp-backend along with the image tags. The
-frontend is built as static files, so no separate container image was stored in ACR. _[Insert_
-_screenshot of ACR repositories with tags]_
+frontend is built as static files, so no separate container image was stored in ACR. 
+<img width="975" height="374" alt="image" src="https://github.com/user-attachments/assets/22d7d31b-e2d7-4e71-9db0-6147e2d03948" />
+<img width="975" height="853" alt="image" src="https://github.com/user-attachments/assets/100a9c21-b624-4fc6-a4d5-f25cdde27fc1" />
+
 
 
 **2.5 Azure Cosmos DB (MongoDB API) Database Running**
@@ -68,8 +79,10 @@ _screenshot of ACR repositories with tags]_
 
 Because the original lab assumed Azure SQL, the database was adapted to Azure Cosmos DB
 with the MongoDB API. The database is in the Running state, and the required collections (users,
-tasks, etc.) are populated. This was verified via the Cosmos DB Data Explorer. _[Insert_
-_screenshot of Cosmos DB overview and collections]_
+tasks, etc.) are populated. This was verified via the Cosmos DB Data Explorer. 
+<img width="975" height="369" alt="image" src="https://github.com/user-attachments/assets/2f1582df-231a-402a-b85e-b1cfc3eaca05" />
+<img width="579" height="323" alt="image" src="https://github.com/user-attachments/assets/69cdd125-9fd7-43b0-88b7-574476e72785" />
+
 
 
 **2.6 App Service Deployed (Adapted to Linux VM)**
@@ -79,7 +92,8 @@ Due to a student subscription quota limit, the backend App Service could not be 
 workaround, a Linux virtual machine (vm-taskapp-backend) was provisioned. The backend
 Docker container runs on this VM, and the health
 endpoint http://<VM-IP>:8800/api/health returns HTTP 200, confirming the backend is
-live. _[Insert screenshot of the VM running_ docker ps _or the health endpoint response]_
+live. 
+<img width="975" height="254" alt="image" src="https://github.com/user-attachments/assets/84634416-b0d6-49a2-b375-6dac919db75e" />
 
 
 **2.7 Static Web App Live**
@@ -88,7 +102,9 @@ live. _[Insert screenshot of the VM running_ docker ps _or the health endpoint r
 The frontend was initially deployed to an Azure Static Web App. However, due to mixed‑content
 (HTTPS frontend calling HTTP backend), the frontend was moved to the same Linux VM and
 served by Nginx as a reverse proxy. The frontend loads without errors and successfully calls the
-backend API. _[Insert screenshot of the Taskify login page loaded in a browser]_
+backend API.
+<img width="847" height="486" alt="image" src="https://github.com/user-attachments/assets/8ba6eafb-f7b9-4148-88bf-ef93d14b0458" />
+
 
 
 **2.8 End‑to‑End Function Test**
@@ -97,7 +113,17 @@ backend API. _[Insert screenshot of the Taskify login page loaded in a browser]_
 A complete user journey was tested: registration, login, and task creation (admin only). After
 logging in as an admin user, a new task was created via the “+” button, and it appeared instantly
 in the dashboard. This confirms that the frontend, backend, and database are all connected and
-functioning correctly. _[Insert screenshot of the dashboard showing a newly created task]_
+functioning correctly.
+<img width="975" height="89" alt="image" src="https://github.com/user-attachments/assets/5503cff7-023a-405c-9b73-b7128bbc428c" />
+<img width="769" height="435" alt="image" src="https://github.com/user-attachments/assets/5f15c462-8728-47bf-80ff-81a432e8a2ce" />
+<img width="975" height="776" alt="image" src="https://github.com/user-attachments/assets/5944ad57-5ca2-4dc6-aee9-2f23140cb9af" />
+<img width="975" height="560" alt="image" src="https://github.com/user-attachments/assets/173c0ea3-400c-439c-9d59-40c0482b8647" />
+<img width="975" height="438" alt="image" src="https://github.com/user-attachments/assets/777a77f4-ef6b-4b37-ac21-65e1638e8c0d" />
+<img width="586" height="616" alt="image" src="https://github.com/user-attachments/assets/bf6ab0bf-4d56-45dc-b493-a1d63b892d73" />
+<img width="975" height="890" alt="image" src="https://github.com/user-attachments/assets/191abac4-36fc-44e4-a143-096f6a2cd47f" />
+<img width="924" height="267" alt="image" src="https://github.com/user-attachments/assets/c708a051-8a14-4dea-8514-c33b536aeb6b" />
+<img width="975" height="669" alt="image" src="https://github.com/user-attachments/assets/b5c51193-4c5b-48f2-bcfc-d0567a593904" />
+
 
 
 **2.9 Successful Pipeline Run**
@@ -105,7 +131,9 @@ functioning correctly. _[Insert screenshot of the dashboard showing a newly crea
 
 The Azure DevOps backend pipeline was run on the develop branch. All stages (Build,
 DeployDev, etc.) completed with green checkmarks, indicating a successful build and
-deployment. _[Insert screenshot of the pipeline run with green stages]_
+deployment.
+<img width="975" height="195" alt="image" src="https://github.com/user-attachments/assets/bef0e45b-4b24-421f-a543-4435466d0f03" />
+<img width="975" height="395" alt="image" src="https://github.com/user-attachments/assets/66b6b3ea-71d9-4100-8d39-6a72ee1a1744" />
 
 
 **2.10 Multi‑Stage Pipeline Proof**
@@ -113,27 +141,18 @@ deployment. _[Insert screenshot of the pipeline run with green stages]_
 
 The pipeline YAML defines multiple stages: Build, DeployDev, and DeployProd. The run view
 clearly shows these stages sequentially, each with a green checkmark. This demonstrates a true
-multi‑stage CI/CD workflow. _[Insert screenshot of pipeline stages]_
+multi‑stage CI/CD workflow.
+<img width="975" height="577" alt="image" src="https://github.com/user-attachments/assets/716372e8-bb89-4754-983a-905211e140a4" />
+<img width="975" height="376" alt="image" src="https://github.com/user-attachments/assets/ce0dfdb3-7853-41e6-969a-938c38c9cf5f" />
 
 
 **2.11 Approval Gate Used**
 
-
-The production environment (DeployProd stage) was configured with an approval gate. Before
-the pipeline can deploy to production, a manual approval is required in Azure DevOps →
-Environments → production. This was verified by observing that deployment to production only
-proceeded after explicit approval. _[Insert screenshot of the approval pending notification or_
-_approved status]_
-
+Deployed only to development not production.
 
 **2.12 No Secrets in Code**
 
-
-All sensitive information (database connection strings, JWT secrets, ACR credentials) is stored
-in Azure DevOps Variable Groups or Azure App Settings. No .env files are committed to the
-repository, and a search through the codebase confirms that no passwords or API keys are
-hardcoded. _[Insert screenshot showing the absence of_ .env _files in the repo]_
-
+No .env files are committed that satisfies “No secrets in code.”
 
 **3. Extra Mile Completion Verification**
 
@@ -146,39 +165,24 @@ Terraform was used to provision Azure resources as code. The configuration files
 Linux Web App. The remote state was stored in an Azure Blob Storage container (tfstate). After
 running terraform apply, all resources were created successfully. The command terraform
 show lists every resource, and the Activity Log in Azure Portal confirms that each resource was
-created by Terraform. _[Insert screenshot of the blob container with_ tfstate _file and_ terraform
-show _output]_
+created by Terraform.
+<img width="955" height="404" alt="image" src="https://github.com/user-attachments/assets/bd8c4c62-770c-49ee-aa86-a0a94913316c" />
+<img width="955" height="404" alt="image" src="https://github.com/user-attachments/assets/b3ac6084-846f-4ec1-82ce-db417877b69d" />
+<img width="975" height="405" alt="image" src="https://github.com/user-attachments/assets/6a870e29-c814-47db-98fa-a75fd8248695" />
+<img width="975" height="191" alt="image" src="https://github.com/user-attachments/assets/2bc4eeaf-1d44-45e5-abbc-502aabe1dc4b" />
+<img width="975" height="579" alt="image" src="https://github.com/user-attachments/assets/846a964e-8eb0-4fa1-8ffa-daf5b014e3a9" />
+
 
 
 **3.2 Static Application Security Testing with SonarQube**
 
 
 A Linux VM (vm-sonarqube) was provisioned, and SonarQube Community Edition was installed
-using Docker. The SonarQube web UI is accessible at http://<VM-IP>:9000. The
+using Docker. The SonarQube web UI is accessible at http://20.6.130.6/:9000. The
 project taskapp-backend was analysed, and the dashboard displays code quality metrics including
-bugs, vulnerabilities, code smells, and coverage. _[Insert screenshot of SonarQube project_
-_dashboard]_
-
-
-**3.2.1 Custom Quality Gate**
-
-
-A custom quality gate named “TaskApp Enterprise Gate” was created. It enforces that on new
-code, the Security Rating, Reliability Rating, and Maintainability Rating must be A, and
-Duplicated Lines (%) must be less than 8.0%. The quality gate was set as the default for the
-project. _[Insert screenshot of the quality gate conditions]_
-
-
-**3.2.2 Pipeline Failure on Quality Gate**
-
-
-To demonstrate that the pipeline respects the quality gate, a code change was introduced that
-created a security vulnerability (e.g., using eval() in a backend route). After committing and
-running the pipeline, the SAST stage (SonarQube) failed because the new code violated the
-
-
-quality gate. The pipeline stopped before deployment, proving the gate works. _[Insert screenshot_
-_of the failed pipeline stage with SonarQube quality gate red]_
+bugs, vulnerabilities, code smells, and coverage.
+<img width="975" height="562" alt="image" src="https://github.com/user-attachments/assets/94da6341-97a8-44a1-9c2a-3b3aa980b6d1" />
+<img width="608" height="220" alt="image" src="https://github.com/user-attachments/assets/94de3ba2-09e9-4153-8489-324de3b7d0a2" />
 
 
 **3.3 Software Composition Analysis with Snyk**
@@ -187,8 +191,10 @@ _of the failed pipeline stage with SonarQube quality gate red]_
 A free Snyk account was created, and the Snyk extension was installed in Azure DevOps. A
 service connection named snyk-connection was set up using the Snyk API token. The Snyk
 dashboard shows the imported project (from server/package.json) along with a list of
-dependency vulnerabilities, their severity, and recommended fixes. _[Insert screenshot of the Snyk_
-_project dashboard]_
+dependency vulnerabilities, their severity, and recommended fixes.
+
+
+
 
 
 **3.3.1 SCA Stage in Pipeline**
@@ -197,8 +203,9 @@ _project dashboard]_
 The backend pipeline was extended with an SCA stage that runs the SnykSecurityScan@1 task.
 The stage executes after SAST and before the build. When Snyk finds high‑severity issues, the
 pipeline fails (unless failOnIssues is set to false). The pipeline logs show the Snyk scan output,
-and an HTML report is attached as an artifact. _[Insert screenshot of the pipeline SCA stage and_
-_scan output]_
+and an HTML report is attached as an artifact.
+
+
 
 
 **3.4 Dynamic Application Security Testing with OWASP ZAP**
