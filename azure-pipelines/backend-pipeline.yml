@@ -147,13 +147,17 @@ stages:
   dependsOn: Build
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
   jobs:
-    - job: DeployProdJob
+    - deployment: DeployProdJob
+      environment: 'production'
       pool:
         vmImage: 'ubuntu-latest'
-      steps:
-        - task: AzureWebAppContainer@1
-          displayName: 'Deploy Backend to Prod App Service'
-          inputs:
-            azureSubscription: $(AZURE_SUBSCRIPTION)
-            appName: $(BACKEND_APP_NAME)
-            containers: $(DOCKER_REGISTRY)/$(BACKEND_IMAGE_NAME):$(imageTag)
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - task: AzureWebAppContainer@1
+                displayName: 'Deploy Backend to Prod App Service'
+                inputs:
+                  azureSubscription: $(AZURE_SUBSCRIPTION)
+                  appName: $(BACKEND_APP_NAME)
+                  containers: $(DOCKER_REGISTRY)/$(BACKEND_IMAGE_NAME):$(imageTag)
