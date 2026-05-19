@@ -1,0 +1,95 @@
+trigger:
+  branches:
+    include:
+      - main
+      - develop
+  paths:
+    include:
+      - client/**
+
+variables:
+  - group: taskapp-variables
+
+stages:
+  - stage: Build
+    displayName: 'Build Frontend'
+    jobs:
+      - job: BuildJob
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - checkout: self
+
+          - task: NodeTool@0
+            displayName: 'Install Node.js'
+            inputs:
+              versionSpec: '18.x'
+
+          - script: |
+              cd client
+              npm ci
+              npm run build
+            displayName: 'Install dependencies and build'
+            env:
+              VITE_APP_BASE_URL: $(REACT_APP_BASE_URL)
+
+          - task: CopyFiles@2
+            displayName: 'Copy build output to staging'
+            inputs:
+              SourceFolder: 'client/dist'
+              Contents: '**'
+              TargetFolder: '$(Build.ArtifactStagingDirectory)/dist'
+
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish artifact'
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)/dist'
+              ArtifactName: 'drop'
+
+  - stage: DeployDev
+    displayName: 'Deploy to Development'
+    dependsOn: Build
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+    jobs:
+      - job: DeployDevJob
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: DownloadPipelineArtifact@2
+            displayName: 'Download frontend build artifact'
+            inputs:
+              artifactName: 'drop'
+              targetPath: '$(System.DefaultWorkingDirectory)/frontend-build'
+
+          - task: AzureStaticWebApp@0
+            displayName: 'Deploy to Static Web App (Dev)'
+            inputs:
+              app_location: ''
+              output_location: ''
+              azure_static_web_apps_api_token: $(STATIC_WEB_APP_TOKEN)
+              skip_app_build: true
+              workingDirectory: '$(System.DefaultWorkingDirectory)/frontend-build'
+
+  - stage: DeployProd
+    displayName: 'Deploy to Production'
+    dependsOn: Build
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - job: DeployProdJob
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: DownloadPipelineArtifact@2
+            displayName: 'Download frontend build artifact'
+            inputs:
+              artifactName: 'drop'
+              targetPath: '$(System.DefaultWorkingDirectory)/frontend-build'
+
+          - task: AzureStaticWebApp@0
+            displayName: 'Deploy to Static Web App (Prod)'
+            inputs:
+              app_location: ''
+              output_location: ''
+              azure_static_web_apps_api_token: $(STATIC_WEB_APP_TOKEN)
+              skip_app_build: true
+              workingDirectory: '$(System.DefaultWorkingDirectory)/frontend-build'
