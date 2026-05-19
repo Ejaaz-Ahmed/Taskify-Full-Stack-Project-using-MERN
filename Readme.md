@@ -145,6 +145,8 @@ multi‑stage CI/CD workflow.
 
 
 **2.11 Approval Gate Used**
+<img width="948" height="276" alt="image" src="https://github.com/user-attachments/assets/49badcb8-1b7f-48f3-8829-5f1d4b836c58" />
+
 
 Deployed only to development not production.
 
